@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+  var currentStep = 1;
+
   // populate the `sounds` object
   sounds = {};
   sounds.num1 = new Sound("audio/num1.mp3", 0.5);
@@ -18,7 +20,18 @@ $(document).ready(function() {
   // keeps track of whether sequencer is playing or stopped
   var player = -1;
 
-  
+  function onPlay() {
+    if ( steps[currentStep].hasClass('on') ) {
+      sounds[ "num1" ].play(audioContext.currentTime);
+    }
+
+    console.log(currentStep);
+
+    currentStep = currentStep === 4 ? 1 : currentStep + 1;
+
+  }
+
+
   $('.play').click( function() {
 
     if ( player > 0 ) {
@@ -27,6 +40,7 @@ $(document).ready(function() {
 
       clearInterval ( player );
       player = -1;
+      currentStep = 1;
 
     }
     
@@ -35,18 +49,11 @@ $(document).ready(function() {
       console.log("play!!!");
       $('.play h2').replaceWith('<h2>STOP!</h2>');
 
-      var currentStep = 2;
-
-      sounds.num1.play(audioContext.currentTime);
+      onPlay();
 
       player = setInterval( function() {
 
-        if ( steps[currentStep].hasClass('on') ) {
-          sounds[ "num1" ].play(audioContext.currentTime);
-        }
-        currentStep = currentStep === 4 ? 1 : currentStep + 1;
-
-        console.log(currentStep);
+        onPlay();
 
       }, 250 );
     }
