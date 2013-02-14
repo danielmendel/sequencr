@@ -16,8 +16,6 @@ $(document).ready(function() {
   // insert the html elements of the sequencer tracks and buttons
   for ( i = 1; i <= NUM_OF_TRACKS; i++) {
 
-    //$('.sequencer').append('<div class="sequencer-track">');
-
       for ( j = 1; j <= NUM_OF_STEPS; j++) {
 
         if ( j % 4 === 1 ) {
@@ -27,7 +25,6 @@ $(document).ready(function() {
           $('.sequencer').append('<div class="sequencer-button off"></div>');
         }
       }
-    //$('.sequencer').append('</div>');
   }
 
   // populate the `buttons` object
