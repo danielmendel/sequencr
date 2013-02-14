@@ -1,33 +1,70 @@
 $(document).ready(function() {
 
+  var i,j;
   var currentStep = 1;
+  var time;
+  var NUM_OF_STEPS = 16;
+  var NUM_OF_TRACKS = 2;
+  var SIXTEENTH_NOTE_TIME = 150; // ms
 
   // populate the `sounds` object
   sounds = {};
-  sounds.num1 = new Sound("audio/num1.mp3", 0.5);
-  sounds.num2 = new Sound("audio/num2.mp3", 0.5);
-  sounds.num3 = new Sound("audio/num3.mp3", 0.5);
-  sounds.num4 = new Sound("audio/num4.mp3", 0.5);
-  sounds.num5 = new Sound("audio/num5.mp3", 0.5);
+  sounds.num1 = new Sound("audio/num1.mp3", 0.3);
+  sounds.num2 = new Sound("audio/num2.mp3", 0.3);
 
-  // populate the `steps` object
-  // steps[ stepNumber ] is a jQuery object containing the div of the button
-  steps = {};
-  for ( var i = 1; i <=4; i++) {
-    steps[i] = $('.sequencer-button:nth-child(' + i + ')');
+  // these are not yet used
+  sounds.num3 = new Sound("audio/num3.mp3", 0.3);
+  sounds.num4 = new Sound("audio/num4.mp3", 0.3);
+  sounds.num5 = new Sound("audio/num5.mp3", 0.3);
+
+  // insert the html elements of the sequencer tracks and buttons
+  for ( i = 1; i <= NUM_OF_TRACKS; i++) {
+
+    $('.sequencer').append('<div class="sequencer-track off">');
+
+      for ( j = 1; j <= NUM_OF_STEPS; j++) {
+
+        if ( j % 4 === 1 ) {
+          $('.sequencer').append('<div class="sequencer-button off quarter"></div>');
+        }
+        else {
+          $('.sequencer').append('<div class="sequencer-button off"></div>');
+        }
+      }
+    $('.sequencer').append('</div>');
+  }
+
+  // populate the `buttons` object
+  // buttons[ buttonNumber ] is a jQuery object containing the div of the button
+  buttons = {};
+
+  for ( i = 1; i <= NUM_OF_TRACKS; i++) {
+
+    buttons[i] = {};
+
+    for ( j = 1; j <= NUM_OF_STEPS; j++) {
+
+      buttons[i][j] = $('.sequencer-button:nth-child(' + (j + ((i-1) * 16)) + ')');
+    }
   }
 
   // keeps track of whether sequencer is playing or stopped
   var player = -1;
 
+  // function that checks to see if the current step has notes on, and plays them if so
   function onPlay() {
-    if ( steps[currentStep].hasClass('on') ) {
-      sounds[ "num1" ].play(audioContext.currentTime);
+    time = audioContext.currentTime;
+
+    if ( buttons[1][currentStep].hasClass('on') ) {
+      sounds[ "num1" ].play(time + 0.1);
+    }
+    if ( buttons[2][currentStep].hasClass('on') ) {
+      sounds[ "num2" ].play(time + 0.1);
     }
 
     console.log(currentStep);
 
-    currentStep = currentStep === 4 ? 1 : currentStep + 1;
+    currentStep = currentStep === NUM_OF_STEPS ? 1 : currentStep + 1;
 
   }
 
@@ -49,13 +86,14 @@ $(document).ready(function() {
       console.log("play!!!");
       $('.play h2').replaceWith('<h2>STOP!</h2>');
 
+      // play the first note immediately, then setInterval waits 1 sixteenth note to check the next step
       onPlay();
 
       player = setInterval( function() {
 
         onPlay();
 
-      }, 250 );
+      }, SIXTEENTH_NOTE_TIME );
     }
 
   });
@@ -78,16 +116,3 @@ $(document).ready(function() {
 });
 
 
-
-
-// setTimeout
-
-// setInterval
-
-
-// var timer - setTimeout( function (){}, 100);
-// clearTimeout ( timer);
-
-// var player = setInterval( function() {}, 100);
-
-// clearInterval( player) ;

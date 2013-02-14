@@ -3,6 +3,12 @@ function Sound( source, level ) {
     audioContext = new webkitAudioContext();
   }
 
+  if (!window.compressor) {
+    compressor = audioContext.createDynamicsCompressor();
+    compressor.connect(audioContext.destination);
+    compressor.ratio = 20;
+  }
+
   var that = this;
   that.source = source;
   that.buffer = null;
@@ -33,12 +39,15 @@ function Sound( source, level ) {
 }
 
 Sound.prototype.play = function( time ) {
+
   if (this.isLoaded === true) {
+
     var playSound = audioContext.createBufferSource();
+
     playSound.buffer = this.buffer;
     playSound.connect(this.panner);
     this.panner.connect(this.volume);
-    this.volume.connect(audioContext.destination);
+    this.volume.connect(compressor);
     playSound.noteOn( time ) ;
   }
 };
