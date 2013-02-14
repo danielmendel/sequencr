@@ -70,7 +70,7 @@ textarea {
 
 .sequencer {
     width: 735px;
-    height: 100px;
+    height: 144px;
     margin: 20px auto;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -84,7 +84,16 @@ textarea {
     background-color: #ddd;
     cursor: pointer;
     border-radius: 5px;
+}
 
+.clear {
+    width: 150px;
+    margin: 25px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #ddd;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
 /* 75 x 75 including border */
@@ -107,7 +116,7 @@ textarea {
 .quarter {
     width: 31px;
     height: 31px;
-    border: 3px solid #aaa;
+    border: 2px solid #666;
 }
 
 .clearfix {
