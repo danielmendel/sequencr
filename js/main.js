@@ -9,9 +9,9 @@ $(document).ready(function() {
 
   // populate the `sounds` object
   sounds = {};
-  sounds.kick = new Sound("audio/kick.wav", 0.3);
+  sounds.kick  = new Sound("audio/kick.wav", 0.3);
   sounds.snare = new Sound("audio/snare.wav", 0.3);
-  sounds.hihat = new Sound("audio/hihat.wav", 0.3);
+  sounds.hihat = new Sound("audio/hihat.wav", 0.1); // hi-hat is pretty loud at 0.3
 
   // insert the html elements of the sequencer tracks and buttons
   for ( i = 1; i <= NUM_OF_TRACKS; i++) {
@@ -49,13 +49,13 @@ $(document).ready(function() {
     time = audioContext.currentTime;
 
     if ( buttons[1][currentStep].hasClass('on') ) {
-      sounds[ "hihat" ].play(time + 0.1);
+      sounds.hihat.play(time + 0.1);
     }
     if ( buttons[2][currentStep].hasClass('on') ) {
-      sounds[ "snare" ].play(time + 0.1);
+      sounds.snare.play(time + 0.1);
     }
     if ( buttons[3][currentStep].hasClass('on') ) {
-      sounds[ "kick" ].play(time + 0.1);
+      sounds.kick.play(time + 0.1);
     }
 
     console.log(currentStep);

@@ -6,7 +6,7 @@ function Sound( source, level ) {
   if (!window.compressor) {
     compressor = audioContext.createDynamicsCompressor();
     compressor.connect(audioContext.destination);
-    compressor.ratio = 20;
+    compressor.ratio = 4;
   }
 
   var that = this;
