@@ -68,35 +68,21 @@ textarea {
     box-shadow: 2px 4px 5px #ddd, -2px 4px 5px rgba(0,0,0,0.1);
 }
 
-.sequencer {
+.instrument {
     width: 735px;
-    height: 144px;
     margin: 20px auto;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.play {
-    width: 150px;
-    margin: 25px auto;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #ddd;
-    cursor: pointer;
-    border-radius: 5px;
+h2.instrument-title {
+    font-size: 20px;
+    letter-spacing: 0;
+    text-align: left;
+    margin: 10px 0 0 10px;
+
 }
 
-.clear {
-    width: 150px;
-    margin: 25px auto;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #ddd;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-/* 75 x 75 including border */
 .sequencer-button {
     border: 1px solid #bbb;
     border-radius: 5px;
@@ -119,9 +105,27 @@ textarea {
     border: 2px solid #666;
 }
 
-.clearfix {
-    clear: both;
+.play {
+    width: 150px;
+    margin: 25px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #ddd;
+    cursor: pointer;
+    border-radius: 5px;
 }
+
+.clear {
+    width: 150px;
+    margin: 25px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #ddd;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
 
 h1,h2 {
     text-align: center;

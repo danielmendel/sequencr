@@ -1,5 +1,28 @@
+var tracks;
+
+// tracks = [
+//   {
+//     name: hihat,
+//     sound: new Sound ("audio/hihat.wav", 0.3);
+//     buttons: [
+//       $($($('.sequencer-track')[0]).children()[0]),
+//       ...
+//       ]
+//   },
+//   {
+//     name: snare,
+//     sound: new Sound ("audio/snare.wav", 0.3);
+//     buttons: [
+//       $($($('.sequencer-track')[0]).children()[0]),
+//       ...
+//       ]
+//   }
+// ]
+// 
+
 $(document).ready(function() {
 
+  // var trackIndex, buttonIndex;
   var i,j;
   var currentStep = 1;
   var time;
@@ -7,58 +30,58 @@ $(document).ready(function() {
   var NUM_OF_TRACKS = 3;
   var SIXTEENTH_NOTE_TIME = 150; // ms
 
-  // populate the `sounds` object
-  sounds = {};
-  sounds.kick  = new Sound("audio/kick.wav", 0.3);
-  sounds.snare = new Sound("audio/snare.wav", 0.3);
-  sounds.hihat = new Sound("audio/hihat.wav", 0.1); // hi-hat is pretty loud at 0.3
+  var $sequencerButton = $('.sequencer-track div');
 
-  // insert the html elements of the sequencer tracks and buttons
-  for ( i = 1; i <= NUM_OF_TRACKS; i++) {
 
-      for ( j = 1; j <= NUM_OF_STEPS; j++) {
+  // we want to be able to check the status of each button like this:
+  // tracks[2].buttons[2].hasClass('on');
+  // right now the tracks are zero-indexed while the buttons start at 1
 
-        if ( j % 4 === 1 ) {
-          $('.sequencer').append('<div class="sequencer-button off quarter"></div>');
-        }
-        else {
-          $('.sequencer').append('<div class="sequencer-button off"></div>');
-        }
-      }
-  }
+  tracks = [];
 
-  // populate the `buttons` object
-  // buttons[ buttonNumber ] is a jQuery object containing the div of the button
-  buttons = {};
 
-  for ( i = 1; i <= NUM_OF_TRACKS; i++) {
 
-    buttons[i] = {};
+  $.each( $('.sequencer-track'), function(trackIndex, trackElement) {
 
-    for ( j = 1; j <= NUM_OF_STEPS; j++) {
+    tracks[trackIndex] = {};
+    tracks[trackIndex].buttons = [];
 
-      buttons[i][j] = $('.sequencer-button:nth-child(' + (j + ((i-1) * 16)) + ')');
-    }
-  }
+    $(trackElement).children().each(function(bIndex, buttonElement) {
+
+      buttonIndex = bIndex + 1;
+
+      tracks[trackIndex].buttons[buttonIndex] = $(buttonElement);
+    });
+  });
+
+  tracks[0].name = "hihat";
+  tracks[0].sound = new Sound("audio/hihat.wav", 0.3);
+  tracks[1].name = "snare";
+  tracks[1].sound = new Sound("audio/snare.wav", 0.3);
+  tracks[2].name = "kick";
+  tracks[2].sound = new Sound("audio/kick.wav", 0.3);
+
+
 
   // keeps track of whether sequencer is playing or stopped
   var player = -1;
 
   // function that checks to see if the current step has notes on, and plays them if so
   function onPlay() {
-    time = audioContext.currentTime;
-
-    if ( buttons[1][currentStep].hasClass('on') ) {
-      sounds.hihat.play(time + 0.1);
-    }
-    if ( buttons[2][currentStep].hasClass('on') ) {
-      sounds.snare.play(time + 0.1);
-    }
-    if ( buttons[3][currentStep].hasClass('on') ) {
-      sounds.kick.play(time + 0.1);
-    }
 
     console.log(currentStep);
+
+    time = audioContext.currentTime;
+
+    $.each(tracks, function(index, trackElement) {
+
+      trackIndex = index + 1;
+
+      if ( trackElement.buttons[ currentStep ].hasClass('on') ) {
+
+        trackElement.sound.play(time + 0.1);
+      }
+    });
 
     currentStep = currentStep === NUM_OF_STEPS ? 1 : currentStep + 1;
 
@@ -91,11 +114,10 @@ $(document).ready(function() {
 
       }, SIXTEENTH_NOTE_TIME );
     }
-
   });
 
   // handles sequencer button click events
-  $('.sequencer-button').click(function() {
+  $sequencerButton.click(function() {
     var $this = $(this);
     
     if ($this.hasClass('off')) {
